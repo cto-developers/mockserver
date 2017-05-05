@@ -339,7 +339,7 @@
 
 <p>The <strong>mockserver</strong> command supports the following options:</p>
 
-<pre><code class="code">mockserver [-logLevel <span class="command_line_argument_placeholder">&lt;level&gt;</span>]  [-serverPort <span class="command_line_argument_placeholder">&lt;port&gt;</span>]  [-proxyPort <span class="command_line_argument_placeholder">&lt;port&gt;</span>]  [-proxyRemotePort <span class="command_line_argument_placeholder">&lt;port&gt;</span>]  [-proxyRemoteHost <span class="command_line_argument_placeholder">&lt;hostname&gt;</span>]
+<pre><code class="code">mockserver [-logLevel <span class="command_line_argument_placeholder">&lt;level&gt;</span>]  [-serverPort <span class="command_line_argument_placeholder">&lt;port&gt;</span>]  [-proxyPort <span class="command_line_argument_placeholder">&lt;port&gt;</span>]  [-proxyRemotePort <span class="command_line_argument_placeholder">&lt;port&gt;</span>]  [-proxyRemoteHost <span class="command_line_argument_placeholder">&lt;hostname&gt;</span>]  [-corsHeaders <span class="command_line_argument_placeholder">&lt;header&gt;</span>]
 
  valid options are:
     -logLevel <span class="command_line_argument_placeholder">&lt;level&gt;</span>            OFF, ERROR, WARN, INFO, DEBUG, TRACE or ALL, as follows:
@@ -368,6 +368,10 @@
                                  value is provided for proxyRemoteHost when
                                  proxyRemotePort has been specified,
                                  proxyRemoteHost will default to "localhost".
+
+    -corsHeaders <span class="command_line_argument_placeholder">&lt;header&gt;</span>        Additional headers for option requests.
+                                     Used when enableCORSForAPI and/or
+                                     enableCORSForAllResponses are enabled.
 
 i.e. mockserver -logLevel INFO -serverPort <span class="numeric_literal">1080</span> -proxyPort <span class="numeric_literal">1090</span> -proxyRemotePort <span class="numeric_literal">80</span> -proxyRemoteHost www.mock-server.com</code></pre>
 
@@ -404,7 +408,8 @@ i.e. mockserver -logLevel INFO -serverPort <span class="numeric_literal">1080</s
 <pre><code class="code">java -jar <span class="command_line_argument_placeholder">&lt;path to mockserver-jetty-jar-with-dependencies.jar&gt;</span> [-serverPort <span class="command_line_argument_placeholder">&lt;port&gt;</span>] \
                                                                [-proxyPort <span class="command_line_argument_placeholder">&lt;port&gt;</span>] \
                                                                [-proxyRemotePort <span class="command_line_argument_placeholder">&lt;port&gt;</span>] \
-                                                               [-proxyRemoteHost <span class="command_line_argument_placeholder">&lt;hostname&gt;</span>]
+                                                               [-proxyRemoteHost <span class="command_line_argument_placeholder">&lt;hostname&gt;</span>] \
+                                                               [-corsHeaders <span class="command_line_argument_placeholder">&lt;header&gt;</span>]
 
  valid options are:
     -serverPort <span class="command_line_argument_placeholder">&lt;port&gt;</span>           Specifies the HTTP, HTTPS, SOCKS and HTTP
@@ -429,6 +434,10 @@ i.e. mockserver -logLevel INFO -serverPort <span class="numeric_literal">1080</s
                                  value is provided for proxyRemoteHost when
                                  proxyRemotePort has been specified,
                                  proxyRemoteHost will default to "localhost".
+
+    -corsHeaders <span class="command_line_argument_placeholder">&lt;header&gt;</span>        Additional headers for option requests.
+                                     Used when enableCORSForAPI and/or
+                                     enableCORSForAllResponses are enabled.
 
 i.e. java -jar ./mockserver-jetty-jar-with-dependencies.jar -serverPort <span class="numeric_literal">1080</span> -proxyPort <span class="numeric_literal">1090</span> -proxyRemotePort <span class="numeric_literal">80</span> -proxyRemoteHost www.mock-server.com</code></pre>
 

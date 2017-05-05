@@ -35,6 +35,7 @@ import static io.netty.handler.codec.http.HttpHeaderValues.CLOSE;
 import static io.netty.handler.codec.http.HttpHeaderValues.KEEP_ALIVE;
 import static org.mockserver.configuration.ConfigurationProperties.enableCORSForAPI;
 import static org.mockserver.configuration.ConfigurationProperties.enableCORSForAllResponses;
+import static org.mockserver.configuration.ConfigurationProperties.corsHeaders;
 import static org.mockserver.model.ConnectionOptions.connectionOptions;
 import static org.mockserver.model.ConnectionOptions.isFalseOrNull;
 import static org.mockserver.model.Header.header;
@@ -243,7 +244,7 @@ public class MockServerHandler extends SimpleChannelInboundHandler<HttpRequest> 
             response.updateHeader(header(CONTENT_TYPE.toString(), contentType + "; charset=utf-8"));
         }
         if (enableCORSForAPI()) {
-            addCORSHeaders(response);
+            addCORSHeaders(response, request);
         }
         writeResponse(ctx, request, response);
     }
@@ -253,7 +254,7 @@ public class MockServerHandler extends SimpleChannelInboundHandler<HttpRequest> 
             response = notFoundResponse();
         }
         if (enableCORSForAllResponses()) {
-            addCORSHeaders(response);
+            addCORSHeaders(response, request);
         }
 
         addConnectionHeader(request, response);
@@ -261,9 +262,16 @@ public class MockServerHandler extends SimpleChannelInboundHandler<HttpRequest> 
         writeAndCloseSocket(ctx, request, response);
     }
 
-    private void addCORSHeaders(HttpResponse response) {
+    private void addCORSHeaders(HttpResponse response, HttpRequest request) {
         String methods = "CONNECT, DELETE, GET, HEAD, OPTIONS, POST, PUT, TRACE";
         String headers = "Allow, Content-Encoding, Content-Length, Content-Type, ETag, Expires, Last-Modified, Location, Server, Vary";
+
+        // append additional cors
+        if (request.getMethod().getValue().equals("OPTIONS") && !corsHeaders().isEmpty()) {
+            headers = headers + ", " + corsHeaders();
+            logFormatter.infoLog("set expanded headers '"  + headers + "'" + System.getProperty("line.separator"));
+        }
+
         if (response.getFirstHeader("Access-Control-Allow-Origin").isEmpty()) {
             response.withHeader("Access-Control-Allow-Origin", "*");
         }

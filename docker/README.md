@@ -53,7 +53,7 @@ This can be modified to change the command line options passed to the `/opt/mock
 
 ```
 run_mockserver.sh [-logLevel <level>] [-serverPort <port>] [-proxyPort <port>] \ 
-                  [-proxyRemotePort <port>] [-proxyRemoteHost <hostname>]
+                  [-proxyRemotePort <port>] [-proxyRemoteHost <hostname>] [-corsHeaders <header>]
 
  valid options are:
     -logLevel <level>            OFF, ERROR, WARN, INFO, DEBUG, TRACE or ALL
@@ -83,6 +83,10 @@ run_mockserver.sh [-logLevel <level>] [-serverPort <port>] [-proxyPort <port>] \
                                  value is provided for proxyRemoteHost when
                                  proxyRemotePort has been specified,
                                  proxyRemoteHost will default to "localhost".
+                                 
+     -corsHeaders <header>       Additional headers for option requests.
+                                 Used when enableCORSForAPI and/or
+                                 enableCORSForAllResponses are enabled.
 
 i.e. run_mockserver.sh -logLevel INFO -serverPort 1080 -proxyPort 1090 \ 
                        -proxyRemotePort 80 -proxyRemoteHost www.mock-server.com

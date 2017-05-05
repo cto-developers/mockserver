@@ -110,6 +110,10 @@ In addition it is possible to <a href="#docker_container_customization">customis
                                      proxyRemotePort has been specified,
                                      proxyRemoteHost will default to "localhost".
 
+        -corsHeaders <span class="command_line_argument_placeholder">&lt;header&gt;</span>        Additional headers for option requests.
+                                     Used when enableCORSForAPI and/or
+                                     enableCORSForAllResponses are enabled.
+
    i.e. /opt/mockserver/run_mockserver.sh -logLevel INFO -serverPort 1080 -proxyPort 1090 -proxyRemotePort 80 -proxyRemoteHost www.mock-server.com</code></pre>
 
 <p>Then the appropriate options can be specified, for example, to setup a direct proxy (from <strong>0.0.0.0:1090</strong> to <strong>www.mock-server.com:80</strong>) using the following command:</p>

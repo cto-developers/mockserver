@@ -9,15 +9,14 @@
 FROM java
 
 # maintainer details
-MAINTAINER James Bloom "jamesdbloom@gmail.com"
+MAINTAINER Daniel Ceballos "daniel.ceballos@cto-global.org"
 
 # download MockServer
-RUN  \
-  mkdir -p /opt/mockserver && \
-  wget -O /opt/mockserver/mockserver-netty-jar-with-dependencies.jar https://oss.sonatype.org/content/repositories/releases/org/mock-server/mockserver-netty/3.10.7/mockserver-netty-3.10.7-jar-with-dependencies.jar && \
-  wget -O /opt/mockserver/run_mockserver.sh https://raw.github.com/jamesdbloom/mockserver/master/docker/run_mockserver.sh && \
-  wget -O /opt/mockserver/CertificateAuthorityCertificate.pem https://raw.github.com/jamesdbloom/mockserver/master/mockserver-core/src/main/resources/org/mockserver/socket/CertificateAuthorityCertificate.pem && \
-  chmod +x /opt/mockserver/run_mockserver.sh
+RUN mkdir -p /opt/mockserver
+COPY mockserver-netty/target/mockserver-netty-3.10.8-SNAPSHOT-jar-with-dependencies.jar /opt/mockserver/mockserver-netty-jar-with-dependencies.jar
+COPY docker/run_mockserver.sh /opt/mockserver/run_mockserver.sh
+COPY mockserver-core/src/main/resources/org/mockserver/socket/CertificateAuthorityCertificate.pem /opt/mockserver/CertificateAuthorityCertificate.pem
+RUN chmod +x /opt/mockserver/run_mockserver.sh
 
 # set working directory
 WORKDIR /opt/mockserver
@@ -26,4 +25,4 @@ WORKDIR /opt/mockserver
 EXPOSE 1080 1090
 
 # define default command.
-CMD ["/opt/mockserver/run_mockserver.sh", "-logLevel", "INFO", "-serverPort", "1080", "-proxyPort", "1090"]
+CMD ["/opt/mockserver/run_mockserver.sh", "-logLevel", "INFO", "-serverPort", "1080", "-proxyPort", "1090", "-corsHeaders", "\"x-xsrf-token, x-session-token\""]
