@@ -3,7 +3,7 @@
 set -e
 
 function showUsage {
-    echo >&2 "   run_mockserver.sh [-logLevel <level>] [-serverPort <port>] [-proxyPort <port>] [-proxyRemotePort <port>] [-proxyRemoteHost <hostname>]"
+    echo >&2 "   run_mockserver.sh [-logLevel <level>] [-serverPort <port>] [-proxyPort <port>] [-proxyRemotePort <port>] [-proxyRemoteHost <hostname>] [-corsHeaders <header>]"
     echo >&2 "                                                                                   "
     echo >&2 "     valid options are:                                                            "
     echo >&2 "        -logLevel <level>            OFF, ERROR, WARN, INFO, DEBUG, TRACE or ALL, as follows: "
@@ -32,6 +32,10 @@ function showUsage {
     echo >&2 "                                     value is provided for proxyRemoteHost when    "
     echo >&2 "                                     proxyRemotePort has been specified,           "
     echo >&2 "                                     proxyRemoteHost will default to \"localhost\"."
+    echo >&2 "                                                                                   "
+    echo >&2 "        -corsHeaders <header>        Additional headers for option requests.       "
+    echo >&2 "                                     Used when enableCORSForAPI and/or             "
+    echo >&2 "                                     enableCORSForAllResponses are enabled.        "
     echo >&2 "                                                                                   "
     echo >&2 "   i.e. /opt/mockserver/run_mockserver.sh -logLevel INFO -serverPort 1080 -proxyPort 1090 -proxyRemotePort 80 -proxyRemoteHost www.mock-server.com"
     echo >&2 "                                                                                   "
@@ -73,6 +77,7 @@ do
         -proxyPort) proxyPort="$2"; shift;;
         -proxyRemotePort) proxyRemotePort="$2"; shift;;
         -proxyRemoteHost) proxyRemoteHost="$2"; shift;;
+        -corsHeaders) corsHeaders="$2"; shift;;
         -*) notset="true"; break;;
         *) break;;
     esac
@@ -97,6 +102,7 @@ fi
 validateArgument $LOG_LEVEL "OFF ERROR WARN INFO DEBUG TRACE ALL." "Invalid value '$LOG_LEVEL' for 'logLevel'"
 
 COMMAND_LINE_OPTS=""
+MOCK_OPTS=""
 
 if [ -n "$serverPort" ]
 then
@@ -114,10 +120,14 @@ if [ -n "$proxyRemoteHost" ]
 then
     COMMAND_LINE_OPTS="$COMMAND_LINE_OPTS -proxyRemoteHost $proxyRemoteHost"
 fi
+if [ -n "corsHeaders" ]
+then
+    MOCK_OPTS="$MOCK_OPTS -Dmockserver.corsHeaders=$corsHeaders"
+fi
 
 if [ -z "$MOCKSERVER_HOME" ]
 then
     MOCKSERVER_HOME="/opt/mockserver"
 fi
 
-runCommand "java -Dfile.encoding=UTF-8 -Dmockserver.logLevel=$LOG_LEVEL -jar $MOCKSERVER_HOME/mockserver-netty-jar-with-dependencies.jar$COMMAND_LINE_OPTS"
+runCommand "java -Dfile.encoding=UTF-8 -Dmockserver.logLevel=$LOG_LEVEL $MOCK_OPTS -jar $MOCKSERVER_HOME/mockserver-netty-jar-with-dependencies.jar$COMMAND_LINE_OPTS"

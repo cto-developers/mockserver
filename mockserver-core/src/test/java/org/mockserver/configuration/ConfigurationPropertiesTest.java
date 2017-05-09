@@ -71,6 +71,20 @@ public class ConfigurationPropertiesTest {
         assertEquals(false, ConfigurationProperties.enableCORSForAllResponses());
         assertEquals("false", System.getProperty("mockserver.enableCORSForAllResponses"));
     }
+
+    @Test
+    public void shouldSetAndReadCorsHeaders() {
+        // given
+        System.clearProperty("mockserver.corsHeaders");
+
+        // when
+        assertEquals("", ConfigurationProperties.corsHeaders());
+        ConfigurationProperties.corsHeaders("firstHeader, secondHeader");
+
+        // then
+        assertEquals("firstHeader, secondHeader", ConfigurationProperties.corsHeaders());
+        assertEquals("firstHeader, secondHeader", System.getProperty("mockserver.corsHeaders"));
+    }
     
     @Test
     public void shouldSetAndReadMaxSocketTimeout() {

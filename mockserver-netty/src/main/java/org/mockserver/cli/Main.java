@@ -22,7 +22,7 @@ public class Main {
     public static final String PROXY_REMOTE_PORT_KEY = "proxyRemotePort";
     public static final String PROXY_REMOTE_HOST_KEY = "proxyRemoteHost";
     public static final String USAGE = "" +
-            "   java -jar <path to mockserver-jetty-jar-with-dependencies.jar> [-serverPort <port>] [-proxyPort <port>] [-proxyRemotePort <port>] [-proxyRemoteHost <hostname>]" + System.getProperty("line.separator") +
+            "   java -jar <path to mockserver-jetty-jar-with-dependencies.jar> [-serverPort <port>] [-proxyPort <port>] [-proxyRemotePort <port>] [-proxyRemoteHost <hostname>] [-corsHeaders <header>]" + System.getProperty("line.separator") +
             "                                                                                       " + System.getProperty("line.separator") +
             "     valid options are:                                                                " + System.getProperty("line.separator") +
             "        -serverPort <port>           Specifies the HTTP and HTTPS port for the         " + System.getProperty("line.separator") +
@@ -47,6 +47,10 @@ public class Main {
             "                                     value is provided for proxyRemoteHost when        " + System.getProperty("line.separator") +
             "                                     proxyRemotePort has been specified,               " + System.getProperty("line.separator") +
             "                                     proxyRemoteHost will default to \"localhost\".    " + System.getProperty("line.separator") +
+            "                                                                                       " + System.getProperty("line.separator") +
+            "        -corsHeaders <header>        Additional headers for option requests.           " + System.getProperty("line.separator") +
+            "                                     Used when enableCORSForAPI and/or                 " + System.getProperty("line.separator") +
+            "                                     enableCORSForAllResponses are enabled.            " + System.getProperty("line.separator") +
             "                                                                                       " + System.getProperty("line.separator") +
             "   i.e. java -jar ./mockserver-jetty-jar-with-dependencies.jar -serverPort 1080 -proxyPort 1090 -proxyRemotePort 80 -proxyRemoteHost www.mock-server.com" + System.getProperty("line.separator") +
             "                                                                                       " + System.getProperty("line.separator");
